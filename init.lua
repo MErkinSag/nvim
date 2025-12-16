@@ -78,3 +78,32 @@ require("lazy").setup({
   },
 })
 
+local function copy_path_line_cols()
+  -- Absolute path (use "%:." for relative to cwd, "%:~" for ~)
+  local path = vim.fn.expand("%:p")
+
+  -- Visual selection endpoints:
+  -- "v" = where visual started, "." = current cursor
+  local a = vim.fn.getpos("v")  -- {bufnum, lnum, col, off}
+  local b = vim.fn.getpos(".")
+  local l1, c1 = a[2], a[3]
+  local l2, c2 = b[2], b[3]
+
+  -- Normalize ordering (so start <= end)
+  if (l2 < l1) or (l2 == l1 and c2 < c1) then
+    l1, l2 = l2, l1
+    c1, c2 = c2, c1
+  end
+
+  -- Format however you like
+  local text = string.format("%s:%d:%d-%d:%d", path, l1, c1, l2, c2)
+
+  -- Copy to clipboard + unnamed
+  vim.fn.setreg("+", text)
+  vim.fn.setreg('"', text)
+
+  -- Optional message
+  vim.notify("Copied: " .. text)
+end
+
+vim.keymap.set("v", "<leader>cp", copy_path_line_cols, { silent = true, desc = "Copy path + selection range" })
