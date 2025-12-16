@@ -108,6 +108,13 @@ local function copy_path_line_cols(opts)
   vim.fn.setreg('"', text)
 
   vim.notify("Copied: " .. text)
+
+  -- Exit visual mode → normal mode
+  vim.api.nvim_feedkeys(
+    vim.api.nvim_replace_termcodes("<Esc>", true, false, true),
+    "n",
+    true
+  )
 end
 
 -- Visual mode mappings
