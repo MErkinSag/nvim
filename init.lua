@@ -72,11 +72,56 @@ require("lazy").setup({
   {
     "karb94/neoscroll.nvim",
     opts = {
-	duration_multiplier = 0.2,  -- faster (default 1.0)
-	easing = "quadratic",
+        duration_multiplier = 0.2,  -- faster (default 1.0)
+        easing = "quadratic",
     },
   },
+
+-- LSP
+
+{
+  "mason-org/mason.nvim",
+  opts = {},
+},
+
+{
+  "mason-org/mason-lspconfig.nvim",
+  dependencies = {
+    "mason-org/mason.nvim",
+    "neovim/nvim-lspconfig",
+  },
+  opts = {
+    ensure_installed = { "pyright" },
+  },
+},
+
+{
+  "neovim/nvim-lspconfig",
+  config = function()
+    local lspconfig = require("lspconfig")
+
+    local on_attach = function(_, bufnr)
+      local map = function(mode, lhs, rhs, desc)
+        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+      end
+
+      map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+      map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+      map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+      map("n", "gr", vim.lsp.buf.references, "References")
+      map("n", "K",  vim.lsp.buf.hover, "Hover")
+      map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+      map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+    end
+
+     lspconfig.pyright.setup({
+       on_attach = on_attach,
+     })
+  end,
+},
+
 })
+
 
 local function copy_path_line_cols(opts)
   opts = opts or {}
