@@ -79,48 +79,60 @@ require("lazy").setup({
 
 -- LSP
 
-{
-  "mason-org/mason.nvim",
-  opts = {},
-},
-
-{
-  "mason-org/mason-lspconfig.nvim",
-  dependencies = {
+-- Mason for auto-installing LSP servers
+  {
     "mason-org/mason.nvim",
-    "neovim/nvim-lspconfig",
+    opts = {},
   },
-  opts = {
-    ensure_installed = { "pyright" },
+
+  {
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+      "mason-org/mason.nvim",
+      "neovim/nvim-lspconfig", -- still needed for server configs
+    },
+    opts = {
+      ensure_installed = { "pyright" },
+    },
   },
-},
 
-{
-  "neovim/nvim-lspconfig",
-  config = function()
-    local lspconfig = require("lspconfig")
+  -- nvim-lspconfig now just provides server configurations
+  -- that vim.lsp.config can use
+  { "neovim/nvim-lspconfig" },
+})
 
-    local on_attach = function(_, bufnr)
-      local map = function(mode, lhs, rhs, desc)
-        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
-      end
-
-      map("n", "gd", vim.lsp.buf.definition, "Go to definition")
-      map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
-      map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
-      map("n", "gr", vim.lsp.buf.references, "References")
-      map("n", "K",  vim.lsp.buf.hover, "Hover")
-      map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
-      map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+-- Set up keymaps via LspAttach autocmd (runs for any LSP)
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    local bufnr = args.buf
+    local map = function(mode, lhs, rhs, desc)
+      vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
     end
 
-     lspconfig.pyright.setup({
-       on_attach = on_attach,
-     })
+    map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+    map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+    map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+    map("n", "gr", vim.lsp.buf.references, "References")
+    map("n", "K",  vim.lsp.buf.hover, "Hover")
+    map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
   end,
-},
-
 })
+
+-- Configure and enable pyright using the new API
+vim.lsp.config("pyright", {
+  -- any custom settings go here
+})
+vim.lsp.enable("pyright")
+
+-- Telescope References view
+--
+local tb = require("telescope.builtin")
+
+vim.keymap.set("n", "gr", function()
+  tb.lsp_references()
+end, { desc = "LSP references (Telescope)" })
+
 
 
 local function copy_path_line_cols(opts)
