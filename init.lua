@@ -143,8 +143,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- Configure and enable pyright using the new API
 vim.lsp.config("pyright", {
-  -- any custom settings go here
+  settings = {
+    python = {
+      -- pythonPath = "/path/to/python",
+      -- Or for venv:
+      venvPath = ".",
+      venv = ".venv",
+    },
+  },
 })
+
 vim.lsp.enable("pyright")
 
 
