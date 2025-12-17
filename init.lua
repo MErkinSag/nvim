@@ -1,5 +1,6 @@
 vim.notify("Loaded init.lua from " .. vim.fn.stdpath("config"))
 
+
 vim.opt.number = true          -- :set nu
 vim.opt.relativenumber = true  -- :set rnu
 
@@ -142,7 +143,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Configure and enable pyright using the new API
+--
+
 vim.lsp.config("basedpyright", {
+  on_attach = function(client, bufnr)
+    client.server_capabilities.semanticTokensProvider = nil
+  end,
   settings = {
     python = {
       pythonPath = "/usr/bin/python3",
@@ -150,16 +156,16 @@ vim.lsp.config("basedpyright", {
       -- venvPath = ".",
       -- venv = ".venv",
     },
-    basedpyright = {
-      inlayHints = {
-        variableTypes = false,
-        callArgumentNames = false,
-        functionReturnTypes = false,
-        genericTypes = false,
-      },
-    },
   },
 })
+
+vim.diagnostic.config({
+  underline = {
+    severity = { min = vim.diagnostic.severity.ERROR }
+  },
+})
+
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostics" })
 
 vim.lsp.enable("basedpyright")
 
