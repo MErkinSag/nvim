@@ -94,7 +94,7 @@ require("lazy").setup({
       "neovim/nvim-lspconfig", -- still needed for server configs
     },
     opts = {
-      ensure_installed = { "pyright" },
+      ensure_installed = { "basedpyright" },
     },
   },
 
@@ -142,18 +142,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Configure and enable pyright using the new API
-vim.lsp.config("pyright", {
+vim.lsp.config("basedpyright", {
   settings = {
     python = {
-      -- pythonPath = "/path/to/python",
+      pythonPath = "/usr/bin/python3",
       -- Or for venv:
-      venvPath = ".",
-      venv = ".venv",
+      -- venvPath = ".",
+      -- venv = ".venv",
+    },
+    basedpyright = {
+      inlayHints = {
+        variableTypes = false,
+        callArgumentNames = false,
+        functionReturnTypes = false,
+        genericTypes = false,
+      },
     },
   },
 })
 
-vim.lsp.enable("pyright")
+vim.lsp.enable("basedpyright")
 
 
 local function copy_path_line_cols(opts)
