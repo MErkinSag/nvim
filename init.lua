@@ -3,6 +3,8 @@ vim.notify("Loaded init.lua from " .. vim.fn.stdpath("config"))
 vim.opt.number = true          -- :set nu
 vim.opt.relativenumber = true  -- :set rnu
 
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
 
 vim.g.mapleader = " "
 
