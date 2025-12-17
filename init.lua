@@ -111,8 +111,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
     map("n", "gd", vim.lsp.buf.definition, "Go to definition")
     map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
-    map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+    -- map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
     map("n", "gr", vim.lsp.buf.references, "References")
+    map("n", "gR", function()
+          require("telescope.builtin").lsp_references()
+        end, "References (Telescope)")
     map("n", "K",  vim.lsp.buf.hover, "Hover")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
@@ -124,15 +127,6 @@ vim.lsp.config("pyright", {
   -- any custom settings go here
 })
 vim.lsp.enable("pyright")
-
--- Telescope References view
---
-local tb = require("telescope.builtin")
-
-vim.keymap.set("n", "gr", function()
-  tb.lsp_references()
-end, { desc = "LSP references (Telescope)" })
-
 
 
 local function copy_path_line_cols(opts)
