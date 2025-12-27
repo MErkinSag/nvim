@@ -65,7 +65,8 @@ require("lazy").setup({
     "mfussenegger/nvim-dap-python",
     dependencies = { "mfussenegger/nvim-dap" },
     config = function()
-      require("dap-python").setup(vim.fn.exepath("python3"))
+      local python_path = vim.g.python_interpreter_path or vim.fn.exepath("python3")
+      require("dap-python").setup(python_path)
       require("debug_py") -- load our custom debug config + keymaps
     end,
   },
@@ -145,13 +146,15 @@ vim.api.nvim_create_autocmd("LspAttach", {
 -- Configure and enable pyright using the new API
 --
 
+local python_path = vim.g.python_interpreter_path or "/usr/bin/python3"
+
 vim.lsp.config("basedpyright", {
   on_attach = function(client, bufnr)
     client.server_capabilities.semanticTokensProvider = nil
   end,
   settings = {
     python = {
-      pythonPath = "/usr/bin/python3",
+      pythonPath = python_path,
       -- Or for venv:
       -- venvPath = ".",
       -- venv = ".venv",
@@ -217,3 +220,21 @@ end, { silent = true, desc = "Copy relative path + selection" })
 vim.keymap.set("v", "cP", function()
   copy_path_line_cols({ absolute = true })
 end, { silent = true, desc = "Copy absolute path + selection" })
+
+-- Python interpreter selector
+local python_selector = require("python_selector")
+
+-- Load persisted interpreter on startup
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    python_selector.load_persisted()
+  end,
+  desc = "Load persisted Python interpreter",
+})
+
+-- User command for selection
+vim.api.nvim_create_user_command("SelectPythonInterpreter", function()
+  python_selector.select_interpreter()
+end, {
+  desc = "Select Python interpreter for DAP and LSP",
+})
