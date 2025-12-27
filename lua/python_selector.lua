@@ -102,7 +102,7 @@ function M.select_interpreter()
   -- Format items for vim.ui.select
   local items = {}
   for _, interp in ipairs(interpreters) do
-    table.insert(items, interp.label)
+    table.insert(items, string.format("%s - %s", interp.label, interp.path))
   end
 
   vim.ui.select(items, {
