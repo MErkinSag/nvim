@@ -73,13 +73,13 @@ require("lazy").setup({
 
 
   -- Neoscroll
-  {
-    "karb94/neoscroll.nvim",
-    opts = {
-        duration_multiplier = 0.2,  -- faster (default 1.0)
-        easing = "quadratic",
-    },
-  },
+  --{
+  --  "karb94/neoscroll.nvim",
+  --  opts = {
+  --      duration_multiplier = 0.2,  -- faster (default 1.0)
+  --      easing = "quadratic",
+  --  },
+  -- },
 
 -- LSP
 
