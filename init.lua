@@ -7,13 +7,15 @@ vim.opt.relativenumber = true  -- :set rnu
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
+vim.opt.guicursor = "n-v-i-c:block"
+
 vim.g.mapleader = " "
 
--- Remap Ctrl+E to scroll down 5 lines in normal mode
-vim.keymap.set("n", "<C-e>", "5<C-e>", { noremap = true, silent = true })
+-- Remap Ctrl+E to scroll down 7 lines in normal mode
+vim.keymap.set("n", "<C-e>", "7<C-e>", { noremap = true, silent = true })
 
--- Remap Ctrl+Y to scroll up 5 lines in normal mode
-vim.keymap.set("n", "<C-y>", "5<C-y>", { noremap = true, silent = true })
+-- Remap Ctrl+Y to scroll up 7 lines in normal mode
+vim.keymap.set("n", "<C-y>", "7<C-y>", { noremap = true, silent = true })
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
