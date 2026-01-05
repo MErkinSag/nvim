@@ -9,6 +9,12 @@ vim.opt.background = "dark"
 
 vim.g.mapleader = " "
 
+-- Remap Ctrl+E to scroll down 5 lines in normal mode
+vim.keymap.set("n", "<C-e>", "5<C-e>", { noremap = true, silent = true })
+
+-- Remap Ctrl+Y to scroll up 5 lines in normal mode
+vim.keymap.set("n", "<C-y>", "5<C-y>", { noremap = true, silent = true })
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
