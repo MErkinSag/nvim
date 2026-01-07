@@ -78,13 +78,14 @@ require("lazy").setup({
       require("debug_py") -- load our custom debug config + keymaps
     end,
   },
+    
   -- DAP UI
   {
       "igorlfs/nvim-dap-view",
       ---@module 'dap-view'
       ---@type dapview.Config
       opts = {},
-  }
+  },
 
   -- Neoscroll
   --{
