@@ -17,6 +17,12 @@ vim.keymap.set("n", "<C-e>", "7<C-e>", { noremap = true, silent = true })
 -- Remap Ctrl+Y to scroll up 7 lines in normal mode
 vim.keymap.set("n", "<C-y>", "7<C-y>", { noremap = true, silent = true })
 
+-- DAP
+vim.keymap.set("n", "dv", "<cmd>DapViewOpen<cr>", { desc = "DAP view open" })
+
+vim.keymap.set("n", "dV", "<cmd>DapViewClose<cr>", { desc = "DAP view close" })
+
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -78,14 +84,15 @@ require("lazy").setup({
       require("debug_py") -- load our custom debug config + keymaps
     end,
   },
-    
+
   -- DAP UI
   {
-      "igorlfs/nvim-dap-view",
-      ---@module 'dap-view'
-      ---@type dapview.Config
-      opts = {},
-  },
+        "igorlfs/nvim-dap-view",
+        ---@module 'dap-view'
+        ---@type dapview.Config
+        opts = {},
+    },
+  -- { "rcarriga/nvim-dap-ui", dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
 
   -- Neoscroll
   --{
