@@ -26,6 +26,7 @@ table.insert(dap.configurations.python, {
   end,
   console = "integratedTerminal",
   justMyCode = false,
+  subProcess=true,
 })
 
 -- Run that config directly (by name, not index)
@@ -41,9 +42,11 @@ end, { desc = "Debug python module (prompt)" })
 
 -- Core DAP controls
 map("n", "<leader>db", function() dap.toggle_breakpoint() end, { desc = "Breakpoint" })
+map("n", "<leader>dB", function()
+  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, { desc = "Conditional breakpoint" })
 map("n", "<leader>dc", function() dap.continue() end, { desc = "Continue" })
 map("n", "<leader>do", function() dap.step_over() end, { desc = "Step over" })
 map("n", "<leader>di", function() dap.step_into() end, { desc = "Step into" })
 map("n", "<leader>dO", function() dap.step_out() end, { desc = "Step out" })
 map("n", "<leader>dq", function() dap.terminate() end, { desc = "Quit debug" })
-
