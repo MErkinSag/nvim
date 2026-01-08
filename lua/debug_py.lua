@@ -29,6 +29,19 @@ table.insert(dap.configurations.python, {
   subProcess=true,
 })
 
+table.insert(dap.configurations.python, {
+  name = "Python: Launch file (prompt args)",
+  type = "python",
+  request = "launch",
+  program = "${file}",
+  args = prompt_args,
+  cwd = function()
+    return vim.fn.getcwd()
+  end,
+  console = "integratedTerminal",
+  justMyCode = false,
+})
+
 -- Run that config directly (by name, not index)
 map("n", "<leader>dm", function()
   for _, config in ipairs(dap.configurations.python) do
