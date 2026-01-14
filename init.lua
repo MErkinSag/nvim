@@ -23,6 +23,7 @@ vim.keymap.set("n", "dv", "<cmd>DapViewOpen<cr>", { desc = "DAP view open" })
 vim.keymap.set("n", "dV", "<cmd>DapViewClose<cr>", { desc = "DAP view close" })
 
 
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -169,6 +170,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K",  vim.lsp.buf.hover, "Hover")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
+	map("n", "<leader>E", vim.lsp.buf.code_action, "Diagnostic")
   end,
 })
 
