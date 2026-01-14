@@ -170,7 +170,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K",  vim.lsp.buf.hover, "Hover")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
-	map("n", "<leader>E", vim.lsp.buf.code_action, "Diagnostic")
+	map("n", "<leader>E", vim.diagnostic.open_float, "Diagnostic")
   end,
 })
 
