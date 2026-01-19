@@ -146,7 +146,6 @@ require("lazy").setup({
 -- Context
 {	
 	'wellle/context.vim',
-	opts = {},
 }
 
 })
