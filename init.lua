@@ -72,6 +72,18 @@ require("lazy").setup({
     end,
   },
 
+  {
+  'stevearc/oil.nvim',
+  ---@module 'oil'
+  ---@type oil.SetupOpts
+  opts = {default_file_explorer = false},
+  -- Optional dependencies
+  dependencies = { { "nvim-mini/mini.icons", opts = {} } },
+  -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+  -- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+  lazy = false,
+  },
+
   -- DAP core
   { "mfussenegger/nvim-dap" },
 
@@ -144,11 +156,14 @@ require("lazy").setup({
 },
 
 -- Context
-{	
-	'wellle/context.vim',
+{
+        'wellle/context.vim',
 }
 
 })
+
+
+require("oil").setup()
 
 
 -- Set up keymaps via LspAttach autocmd (runs for any LSP)
@@ -169,7 +184,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     map("n", "K",  vim.lsp.buf.hover, "Hover")
     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code action")
-	map("n", "<leader>E", vim.diagnostic.open_float, "Diagnostic")
+        map("n", "<leader>E", vim.diagnostic.open_float, "Diagnostic")
   end,
 })
 
