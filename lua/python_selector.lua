@@ -4,13 +4,27 @@ local M = {}
 M.current_interpreter = nil
 M.project_root = nil
 
--- Find project root by walking up from current file
+-- Find project root by walking up from the current buffer location
 function M.find_project_root()
   local markers = { ".git", "pyproject.toml", "setup.py", "requirements.txt", ".nvim.lua" }
   local current_file = vim.fn.expand("%:p")
+  local path
 
-  -- Start from file's directory, walk up to root
-  local path = vim.fn.fnamemodify(current_file, ":h")
+  if current_file:match("^oil://") then
+    path = current_file:gsub("^oil://", "")
+  elseif current_file == "" then
+    path = vim.fn.getcwd()
+  elseif vim.fn.isdirectory(current_file) == 1 then
+    path = current_file
+  else
+    path = vim.fn.fnamemodify(current_file, ":h")
+  end
+
+  path = vim.fn.fnamemodify(path, ":p")
+  if path ~= "/" then
+    path = path:gsub("/$", "")
+  end
+  local start_path = path
 
   while path ~= "/" do
     for _, marker in ipairs(markers) do
@@ -19,11 +33,16 @@ function M.find_project_root()
         return path
       end
     end
-    path = vim.fn.fnamemodify(path, ":h")
+
+    local parent = vim.fn.fnamemodify(path, ":h")
+    if parent == path then
+      break
+    end
+    path = parent
   end
 
-  -- Fallback to current working directory
-  M.project_root = vim.fn.getcwd()
+  -- Fallback to the opened directory/file location, then current working directory.
+  M.project_root = start_path ~= "" and start_path or vim.fn.getcwd()
   return M.project_root
 end
 
