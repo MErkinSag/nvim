@@ -1,6 +1,3 @@
-vim.notify("Loaded init.lua from " .. vim.fn.stdpath("config"))
-
-
 vim.opt.number = true          -- :set nu
 vim.opt.relativenumber = true  -- :set rnu
 
@@ -58,6 +55,8 @@ require("lazy").setup({
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("nvim-tree").setup({
+        hijack_netrw = false,
+        hijack_directories = { enable = false },
         view = { width = 30 },
         renderer = { group_empty = true },
         filters = { dotfiles = false },
@@ -76,7 +75,7 @@ require("lazy").setup({
   'stevearc/oil.nvim',
   ---@module 'oil'
   ---@type oil.SetupOpts
-  opts = {default_file_explorer = false},
+  opts = { default_file_explorer = true },
   -- Optional dependencies
   dependencies = { { "nvim-mini/mini.icons", opts = {} } },
   -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
@@ -173,9 +172,6 @@ require("lazy").setup({
 }
 
 })
-
-
-require("oil").setup()
 
 
 -- Set up keymaps via LspAttach autocmd (runs for any LSP)
