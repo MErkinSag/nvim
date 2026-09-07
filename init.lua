@@ -2,7 +2,6 @@ vim.opt.number = true          -- :set nu
 vim.opt.relativenumber = true  -- :set rnu
 
 vim.opt.termguicolors = true
-vim.opt.background = "dark"
 
 vim.opt.guicursor = "n-v-i-c:block"
 
@@ -34,6 +33,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+  { "pablopunk/pi.nvim" },
 
   -- Telescope
   {
@@ -140,17 +140,30 @@ require("lazy").setup({
 
   -- Colorscheme
   {
-  "EdenEast/nightfox.nvim",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    -- optional: configure nightfox
-    require("nightfox").setup({
-      -- your options here
-    })
+    "jnschurig/ghosttysync.nvim",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      require("ghosttysync").setup({
+        disable = { background = true },
+        plugins = { "nvim-tree", "telescope" },
+        lualine_theme = false,
+        custom_colors = function(colors)
+          -- Let Ghostty render opacity and blur behind floating windows too.
+          colors.editor.panel_bg = "NONE"
+        end,
+      })
 
-    vim.cmd.colorscheme("dayfox")
-  end,
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.api.nvim_create_augroup("GhosttySyncCursor", { clear = true }),
+        pattern = "ghosttysync",
+        callback = function()
+          -- Preserve the block cursor instead of the theme's cursor shapes.
+          vim.opt.guicursor = "n-v-i-c:block"
+        end,
+      })
+      vim.cmd.colorscheme("ghosttysync")
+    end,
   },
 --    "zenbones-theme/zenbones.nvim",
 --    -- Optionally install Lush. Allows for more configuration or extending the colorscheme
